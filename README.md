@@ -1,2 +1,2 @@
-# base
+# src
 Execute "make" for compilation.
