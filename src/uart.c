@@ -28,7 +28,7 @@ void uart_puts(const char* str)
 void uart_init()
 {
     // Disable UART0.
-    mmio_write(UART0_CR, 0x00000000);
+    mmio_write(UART0_CR, 0x00000000);  
     // Setup the GPIO pin 14 && 15.
     
     // Disable pull up/down for all GPIO pins & delay for 150 cycles.
