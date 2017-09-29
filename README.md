@@ -1,2 +1,2 @@
 # src
-Go to src/ then execute "make" for compilation.
+Go to src/ then execute "make" to build
