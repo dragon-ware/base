@@ -28,6 +28,8 @@ $(OBJ)/%.o: $(SRC)/%.c
 $(OBJ) :
 	mkdir -p $@
 
+run: all
+	qemu-system-arm -m 256 -M raspi2 -serial stdio -kernel bin/kernel.elf 
 clean :
 	$(RM) -r $(OBJ)/*
 	$(RM) -r $(BIN)/*
