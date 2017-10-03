@@ -19,10 +19,12 @@ all: $(OBJ_FILES)
 	@echo "Building all target " $(SRC_FILES)
 	$(CC) $(CARGS) -c $(SRC)/startup.s -o $(OBJ)/startup.o	
 	@echo "Linking final ELF file"
+	mkdir -p $(BIN)
 	$(CC) $(CARGS) -T $(SRC)/linker.ld -nostdlib $^ $(OBJ)/startup.o -o $(BIN)/kernel.elf
 	@echo -e "${GREEN}Build Success${NC}"
 	
 $(OBJ)/%.o: $(SRC)/%.c
+	mkdir -p $(OBJ)
 	$(CC) $(CARGS) -c -o $@ $<
 
 $(OBJ) :
