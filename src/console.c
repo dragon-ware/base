@@ -27,6 +27,9 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "console.h"
+
+#if 0
 #include "arm/synchronize.h"
 #include "arm/arm.h"
 
@@ -34,7 +37,6 @@
 #include "bcm2835_mailbox.h"
 #include "bcm2835_vc.h"
 
-#include "console.h"
 
 extern unsigned char FONT[];
 
@@ -235,7 +237,7 @@ int console_draw_char(const int ch, const int x, const int y, const uint16_t for
 	draw_char(ch, x * CHAR_W, y * CHAR_H, fore, back);
 	return (int)ch;
 }
-
+#endif
 /**
  * Prints character ch at the current location of the cursor.
  *
@@ -250,6 +252,7 @@ int console_draw_char(const int ch, const int x, const int y, const uint16_t for
  * @return
  */
 int console_putc(const int ch) {
+#if 0
 #if defined (ARM_ALLOW_MULTI_CORE)
 	while (__sync_lock_test_and_set(&lock, 1) == 1);
 #endif
@@ -271,7 +274,7 @@ int console_putc(const int ch) {
 #if defined (ARM_ALLOW_MULTI_CORE)
 	__sync_lock_release(&lock);
 #endif
-
+#endif
 	return ch;
 }
 
@@ -305,6 +308,7 @@ void console_write(const char *s, int n) {
 	}
 }
 
+#if 0
 /**
  *
  * @param s
@@ -607,3 +611,4 @@ int console_init() {
 #endif
 	return CONSOLE_OK;
 }
+#endif

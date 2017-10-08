@@ -28,6 +28,7 @@
 
 #include <stdint.h>
 
+#if 0
 #define RGB(r, g, b) ((((r)>>3)<<11) | (((g)>>2)<<5) | ((b)>>3))
 
 // some RGB color definitions
@@ -49,10 +50,16 @@
 #define CONSOLE_FAIL_INVALID_PITCH_RESPONSE	-7	///<
 #define CONSOLE_FAIL_INVALID_PITCH_DATA		-8	///<
 
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+extern int console_putc(const int);
+extern int console_puts(const char *);
+
+#if 0
 extern const uint32_t console_get_address(void);
 extern const uint32_t console_get_width(void);
 extern const uint32_t console_get_height(void);
@@ -62,8 +69,7 @@ extern const uint32_t console_get_depth(void);
 extern const int console_get_line_width(void);
 
 extern int console_init(void);
-extern int console_putc(const int);
-extern int console_puts(const char *);
+
 extern int console_error(const char *);
 extern int console_status(uint16_t const, const char *);
 extern void console_write(const char *, int);
@@ -86,6 +92,8 @@ extern void console_clear_line(const int);
 
 extern uint16_t console_get_top_row(void);
 extern void console_set_top_row(uint16_t);
+
+#endif
 
 #ifdef __cplusplus
 }
