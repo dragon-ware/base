@@ -124,56 +124,6 @@ static int _itostr(int x, /*@out@*/char *s, const int d) {
 	return i + 1;
 }
 
-static void _round_float(/*@out@*/char *dest, int *size) {
-	int i = *size - 1;
-	char *q = (char *) dest + i;
-	bool round_int = false;
-
-	if (*q >= '5') {
-
-		char *w = q - 1;
-
-		if (*w != '.') {
-			while (*w == '9') {
-				*w-- = '0';
-			}
-			if (*w != '.') {
-				*w += (char) 1;
-			} else {
-				round_int = true;
-			}
-		} else {
-			round_int = true;
-		}
-
-		if (round_int) {
-			w--;
-
-			while (*w == '9' && w >= dest && *w != '-') {
-				*w-- = '0';
-			}
-
-			if (w >= dest && *w != '-') {
-				*w += (char) 1;
-			} else {
-				w++;
-				q++;
-				(void *) memmove(w + 1, w, (size_t) (q - w));
-				*w = '1';
-				i++;
-			}
-		}
-	}
-
-	if (dest[i - 1] == '.') {
-		i--;
-	}
-
-	*size = i;
-
-	return;
-}
-
 static void _format_hex(struct context *ctx, unsigned int arg) {
 	char buffer[64] __attribute__((aligned(4)));
 	char *p = buffer + (sizeof(buffer) / sizeof(buffer[0])) - 1;
@@ -277,50 +227,6 @@ static void _format_int(struct context *ctx, long int arg) {
 	while (i++ < ctx->width) {
 		_xputch(ctx, (int) ' ');
 	}
-}
-
-static void _format_float(struct context *ctx, float f) {
-	char buffer[64] __attribute__((aligned(4)));
-	char *dest = (char *) buffer;
-	int ipart;
-	int precision;
-	int size;
-	int i;
-
-	if ((ctx->flag & FLAG_PRECISION) != 0) {
-		precision = ctx->prec;
-	} else {
-		precision = 6;
-	}
-
-	if (f < 0) {
-		*dest++ = '-';
-		f = -f;
-	}
-
-	ipart = (int) f;
-
-	dest += _itostr(ipart, dest, 0);
-
-	f -= ipart;
-
-	precision++;
-	*dest++ = '.';
-	dest += _itostr((int) (f * _pow10(precision)), dest, precision);
-	size = dest - buffer;
-	_round_float(buffer, &size);
-
-	i = 0;
-	while (((size + i) < ctx->width)) {
-		_xputch(ctx, (int) ' ');
-		i++;
-	}
-
-	dest = buffer;
-	while (size-- > 0) {
-		_xputch(ctx, (int) *dest++);
-	}
-
 }
 
 static void _format_string(struct context *ctx, const char *s) {
@@ -432,10 +338,6 @@ static int _vprintf(const int size, const char *fmt, va_list va) {
 				l = -l;
 			}
 			_format_int(&ctx, l);
-			break;
-		case 'f':
-			f = (float) va_arg(va, double);
-			_format_float(&ctx, f);
 			break;
 		case 'p':
 			_format_pointer(&ctx, va_arg(va, unsigned int));
