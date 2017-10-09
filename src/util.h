@@ -233,7 +233,7 @@ extern "C" {
 }
 
 extern const uint32_t hex_uint32(const char *);
-
+int printf(const char* fmt, ...);
 #ifdef __cplusplus
 }
 #endif

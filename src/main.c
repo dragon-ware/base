@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include "uart.h"
 #include "mmio.h"
+#include "util.h"
 
 #if defined(__cplusplus)
 extern "C" /* Use C linkage for kernel_main. */
@@ -15,7 +16,7 @@ void bootloader_main(uint32_t r0, uint32_t r1, uint32_t atags)
 	(void) atags;
  
 	uart_init();
-	uart_puts("Hello, kernel World!\r\n");	
+	printf("Hello, kernel World!\r\n");	
  
 	while (1)
 	{

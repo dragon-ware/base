@@ -275,6 +275,7 @@ int console_putc(const int ch) {
 	__sync_lock_release(&lock);
 #endif
 #endif
+    uart_putc((unsigned char)(ch));
 	return ch;
 }
 
